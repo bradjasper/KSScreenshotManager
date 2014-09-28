@@ -11,7 +11,7 @@ import shutil
 def compile_iossim():
     previous_dir = os.getcwd()
     os.chdir(os.path.join(os.path.realpath(os.path.split(__file__)[0]), 'Contributed', 'ios-sim'))
-    subprocess.call(['xcodebuild', '-scheme', 'ios-sim', '-configuration', 'Release', '-derivedDataPath', 'build', 'clean', 'build', 'SYMROOT=build'], stdout=open('/dev/null', 'w'))
+    subprocess.call(['xcodebuild', '-scheme', 'ios-sim', '-configuration', 'Release', '-derivedDataPath', 'build', 'clean', 'build', 'SYMROOT=$(PWD)/build'])
     os.chdir(previous_dir)
 
 def compile_app():
