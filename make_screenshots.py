@@ -19,10 +19,14 @@ def compile_app():
     os.chdir(project_path)
     
     # Force the simulator build to use 32-bit, otherwise UIGetScreenImage doesn't exist
-    if 'scheme_name' in options:
-        subprocess.call(['xcodebuild', '-scheme', options['scheme_name'], '-configuration', options['build_config'], '-sdk', 'iphonesimulator', '-derivedDataPath', 'build', 'clean', 'build', 'ARCHS=i386', 'ONLY_ACTIVE_ARCH=NO'], stdout=open('/dev/null', 'w'))
+    #if 'scheme_name' in options:
+
+    subprocess.call(['xcodebuild', '-workspace', options['work_space'], '-scheme', options['scheme_name'], '-configuration', options['build_config'], '-sdk', 'iphonesimulator', '-derivedDataPath', 'build', 'clean', 'build', 'ARCHS=i386', 'ONLY_ACTIVE_ARCH=NO', 'SYMROOT=$(PWD)/build'])
+
+    """
     else:
-        subprocess.call(['xcodebuild', '-target', options['target_name'], '-configuration', options['build_config'], '-sdk', 'iphonesimulator', 'clean', 'build', 'SYMROOT=build', 'ARCHS=i386', 'ONLY_ACTIVE_ARCH=NO'], stdout=open('/dev/null', 'w'))
+        subprocess.call(['xcodebuild', '-target', options['target_name'], '-configuration', options['build_config'], '-sdk', 'iphonesimulator', 'clean', 'build', 'SYMROOT=build', 'ARCHS=i386', 'ONLY_ACTIVE_ARCH=NO'])
+    """
 
     os.chdir(previous_dir)
 
@@ -40,7 +44,9 @@ def iossim(app_path, args, device):
 
     subprocess_args += ['--args']
     subprocess_args += args
-    
+
+    print "ios-sim cmd:", " ".join(subprocess_args)
+
     subprocess.call(subprocess_args)
 
 if __name__ == '__main__':
@@ -79,6 +85,8 @@ if __name__ == '__main__':
         app_path = os.path.join(project_path, 'build', 'Build', 'Products', options['build_config'] + '-iphonesimulator', options['app_name'])
     else:
         app_path = os.path.join(project_path, 'build', options['build_config'] + '-iphonesimulator', options['app_name'])
+
+    app_path = "/Users/brad/Projects/Perfect-Pitch-Piano/screenshots/build/Debug-iphonesimulator/PerfectPitchPiano Screenshots.app"
     
     print 'Building with ' + options['build_config'] + ' configuration...'
     compile_app()
