@@ -3,9 +3,7 @@
 # This script will create the output directory if necessary.
 
 import os
-import sys
 import subprocess
-import glob
 import argparse
 import json
 import shutil
